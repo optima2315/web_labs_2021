@@ -187,7 +187,7 @@
                 { clothItem[fieldName]=val;}
             else {clothItem[fieldName]='empty'; }
         });
-        //Т.к. в остальном приложении используется не температура, а clo, в качесте примера реализации бизнес-логики пересчитаем показатель:
+        //Т.к. в остальном приложении используется не температура, а clo, пересчитаем показатель:
         
         var clo = (31-clothItem['comfT'])/0.155/150/2;
         //немного модифицированная формула, т.к. обычно оценке подвергается весь коплект одежды, а не один элемент
@@ -237,7 +237,7 @@
                   show.innerHTML='';
                   var tbl = "<h4>"+selectedTable+"</h4>";
                   tbl+='<div><table> <tr style=\"font: caption; font-style: oblique"><td>Name</td><td>Description</td><td>Waterproof, %</td><td>Windproof, %</td><td>Clo</td></tr>';
-                         // "        <tr><td>Name</td><td>Description</td><td>Waterproof%</td><td>Windproof %</td><td>Clo</td></tr>\n" +
+                         
                   table.forEach(function(row)
                   {
                     tbl+='<tr><td>'+row.name+'</td><td>'+row.description+'</td><td>'+row.waterproof+'</td><td>'+row.windproof+'</td><td>'+row.clo+'</td></tr>';
