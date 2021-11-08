@@ -1,8 +1,5 @@
 <?php
-
-$dsn = 'mysql:host=localhost; dbname=forecast';
-$pdo = new PDO($dsn, 'root', 'root');
-                                                        //Подключение создано
+require_once "configDB.php";
 
 $sql = "SELECT * FROM `".$_REQUEST['table']."`";        //Получаем все записи из выбранной таблицы
 $query = $pdo->prepare($sql);
