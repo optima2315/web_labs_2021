@@ -10,7 +10,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <!--Optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lab 1 Web 2021</title>
+  <title>Lab 4 Web 2021</title>
 </head>
 
     
@@ -27,13 +27,13 @@
               </a>
               <ul class="right hide-on-med-and-down">
                 <li>
-                  <a href="#home">Home</a>
+                  <a href="">Home</a>
                 </li>
                 <li>
-                  <a href="#about">About</a>
+                  <a href="">About</a>
                 </li>
                 <li>
-                  <a href="#contact">Contact</a>
+                  <a href="">Contact</a>
                 </li>
               </ul>
             </div>
@@ -44,13 +44,13 @@
       <ul class="side-nav" id="mobile-nav">
         <h4 class="black-text center">Labs</h4>
         <li>
-          <a href="#home">Home</a>
+          <a href="">Home</a>
         </li>
         <li>
-          <a href="#about">About</a>
+          <a href="">About</a>
         </li>
         <li>
-          <a href="#contact">Contact</a>
+          <a href="">Contact</a>
         </li>
       </ul>
      
@@ -100,7 +100,7 @@
             </div>
             <!-- Inputs for clothes with max and min-->
             <div class="input-field">
-              <input type="number" min="0" max="100" id="lenght" placeholder="Lenght in %">
+              <input type="number" min="0" max="100" id="length" placeholder="length in %">
             </div>
             <div class="input-field">
               <input type="number" id="waterproof" min="0" max="100" required placeholder="Waterproof in %">
@@ -136,16 +136,16 @@
     <div class="container">
       <div class="row">
         <div class="col l6 s12">
-          <h5>Lab 1</h5>
+          <h5>Lab 4</h5>
           <p>Rubanik T.</p>
           <p>356 group</p>
         </div>
         <div class="col l4 offset-l2 s12">
           <h5 class="white-text">Menu</h5>
           <ul>
-            <li><a class="grey-text text-ligten-3" href="#home"></a>Home</li>
-            <li><a class="grey-text text-ligten-3" href="#about"></a>About</li>
-            <li><a class="grey-text text-ligten-3" href="#contact"></a>Contact</li>
+            <li><a class="grey-text text-ligten-3" href=""></a>Home</li>
+            <li><a class="grey-text text-ligten-3" href=""></a>About</li>
+            <li><a class="grey-text text-ligten-3" href=""></a>Contact</li>
           </ul>
         </div>
       </div>
@@ -160,24 +160,26 @@
 </body>
     
 <script>
+
         function Validate()
     {
-        //Ограничение на единовременную отправку предложений (не более 3)
-        if(sessionStorage.length>=3)
-            {
-                alert('Sorry, only 3 items per session.'); 
-                return;
-            }
-        
-       //Валидация средствами JS с уведомлением
-        if (document.getElementById('email').value.length<4)
+       //Валидация средствами JS с уведомлением (дополнена)
+      if (document.getElementById('surname').value.length<4)
+      { alert('Please, fill the field Surname.');
+        document.getElementById('surname').focus();
+        return;}
+      if (document.getElementById('email').value.length<4)
             { alert('Please, fill the field Email.');
              document.getElementById('email').focus();
              return;}
+      if (document.getElementById('name').value.length<4)
+      { alert('Please, fill the field Name.');
+        document.getElementById('name').focus();
+        return;}
         
         //Сохранение данных для дальнейшего отображения/отправки
        var fields = ['surname','email','phone','comment',
-                     'name','description','lenght','waterproof','windproof','comfT',];
+                     'name','description','length','waterproof','windproof','comfT'];
         
         var clothItem = new Object();
         fields.forEach(function(fieldName,i,fields)
@@ -185,36 +187,38 @@
             var val=document.getElementById(fieldName).value;
             if(val.length>=1)
                 { clothItem[fieldName]=val;}
-            else {clothItem[fieldName]='empty'; }
         });
-        //Т.к. в остальном приложении используется не температура, а clo, пересчитаем показатель:
+        //Т.к. в остальном приложении используется не температура, а clo, в качесте примера реализации бизнес-логики пересчитаем показатель:
         
         var clo = (31-clothItem['comfT'])/0.155/150/2;
         //немного модифицированная формула, т.к. обычно оценке подвергается весь коплект одежды, а не один элемент
                    
         delete clothItem.comfT;
         clothItem['clo']=clo;
-        
-        //Сохранение данных (в дальнейших лр уйдёт в cookie)
-        sessionStorage.setItem(sessionStorage.length,JSON.stringify(clothItem));
-        
-        //Заменим форму на последние введённые данные, чтобы продемонстрировать юзеру
-        var show = document.getElementById('showData');
-                    show.innerHTML='';
-                var data=JSON.parse(sessionStorage.getItem(sessionStorage.length-1));
-        
-                var str = "<div class='row'><div class='col s12 m6'><h4>Your data:</h4></div><div class='col s12 m5 offset-m1'>";
-                str +="<br><ul class='collection with-header z-depth-4'> <li class='collection-header'><h5>Clothes</h5></li>";
-                Object.keys(data).forEach(function (key) 
+        console.log(clothItem);
+
+      //В соответствии с заданием изменим функционал
+      $.ajax
+      (
+              {
+                url: 'save_suggestion.php',
+                method: "post",
+                data: {"data": clothItem},
+                success: function (data)
                 {
-                    if (data[key]!='empty')
-                    { str +="<li class='collection-item'><i class='material-icons left'>check</i>"+key+": "+data[key]+"</li>";}
-                });
-    
-                str +="</ul></div></div>";
-                show.innerHTML=str;
-      alert('Your suggestion was saved.');
-        return;
+                  //В соответствии с заданием ждём html
+                  console.log(data);
+                  var show = document.getElementById('showData');
+                  show.innerHTML='';
+                  show.innerHTML=data;
+                },
+                error: function (data) {
+                  alert('Sorry, error while saving your suggestion, try again later.');
+                  console.log(data);
+                }
+              }
+      );
+
     }
 
 
@@ -237,7 +241,7 @@
                   show.innerHTML='';
                   var tbl = "<h4>"+selectedTable+"</h4>";
                   tbl+='<div><table> <tr style=\"font: caption; font-style: oblique"><td>Name</td><td>Description</td><td>Waterproof, %</td><td>Windproof, %</td><td>Clo</td></tr>';
-                         
+
                   table.forEach(function(row)
                   {
                     tbl+='<tr><td>'+row.name+'</td><td>'+row.description+'</td><td>'+row.waterproof+'</td><td>'+row.windproof+'</td><td>'+row.clo+'</td></tr>';
