@@ -49,6 +49,7 @@ exit();
 function GetClientId(): int
 {
     require 'configDB.php';
+  if (!isset($_REQUEST['data']['surname'])) {return $id=0;}
     $sql = "SELECT id FROM clients WHERE surname= '".$_REQUEST['data']['surname']."'";
     $query = $pdo->prepare($sql);
     $query->execute();
