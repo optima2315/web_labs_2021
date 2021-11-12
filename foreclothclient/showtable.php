@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "configDB.php";
 
 $sql = "SELECT * FROM `".$_REQUEST['table']."`";        //Получаем все записи из выбранной таблицы
